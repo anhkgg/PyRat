@@ -5,13 +5,14 @@ PyRat，基于python XmlRPC完成的远控开源项目，包括客户端和服�
 > 申明：项目仅供技术交流，请勿用于商业及非法用途，如产生任何法律纠纷均与本人无关!
 
 1. 由于XmlRPC基于http协议，所以PyRat能够无视防火墙，更加优雅得进行通信和控制。
-2. python的跨平台特性，使得PyRat客户端可以支持Windows/Linux/Macos等不同平台，目前支持Windows/Linux平台，其他平台未作测试。
+2. python的跨平台特性，使得PyRat客户端可以支持Windows/Linux/Macos等不同平台，目前支持**Windows/Linux**平台，其他平台未作测试。
 3. 服务端命令行控制和管理，逼格满满。
 4. 目前客户端支持基本信息、上传、下载、cmdshell、运行软件、结束进程、更新、卸载等功能
 
 # 依赖
 
-1. colorama(服务端)
+1. python2.7
+2. colorama (服务端)
 
 # TODO
 
@@ -191,6 +192,12 @@ process name:notepad.exe
 cmd >test-3333333 do terminate(212) name notepad.exe True
 成功: 给进程 "notepad.exe" 发送了终止信号，进程的 PID 为 25416。
 ```
+
+# 问题
+
+1. 测试中发现可能有编码问题
+
+如果客户端运行在linux，而服务端在windows平台，中文可能出现乱码，因为两个平台使用编码不同，暂时未作处理
 
 # 捐助
 

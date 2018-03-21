@@ -333,7 +333,7 @@ class SvrTask(threading.Thread):
                     if len(tmp) == 2 and tmp[0] == 'cd':
                         self.cmd_dir = tmp[1]
                     elif self.cmd_dir:
-                        cmd = "cd " + self.cmd_dir + ' & ' + cmd
+                        cmd = "cd " + self.cmd_dir + ' && ' + cmd
                     self.db.add_task(self.cur_cid, 'cmdshell', cmd)
 
 class XMLSvr():
