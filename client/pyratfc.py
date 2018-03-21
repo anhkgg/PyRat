@@ -5,15 +5,14 @@ import sys, subprocess
 import os, uuid
 import platform
 import ctypes
-import win32api, win32com, win32gui, win32ui
+import socket
 
 def GetClientId():
-    name = win32api.GetUserName()
+    name = socket.gethostname()
     mac = uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
     return name + '-' + mac
 
 def GetLocalIp():
-    import socket
     return socket.gethostbyname(socket.gethostname())
 
 def GetPublicIp():
@@ -41,7 +40,7 @@ def GetOsVersion():
 
 def GetClientInfo():
     info = {
-        "uname": win32api.GetUserName(),
+        "uname": os.environ['USERNAME'] if sys.platform == 'win32' else os.environ['USER'],
         "osver": GetOsVersion(),
         "lip": GetLocalIp(),
         "rip": GetPublicIp(),

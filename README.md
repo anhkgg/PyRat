@@ -5,18 +5,17 @@ PyRat，基于python XmlRPC完成的远控开源项目，包括客户端和服�
 > 申明：项目仅供技术交流，请勿用于商业及非法用途，如产生任何法律纠纷均与本人无关!
 
 1. 由于XmlRPC基于http协议，所以PyRat能够无视防火墙，更加优雅得进行通信和控制。
-2. python的跨平台特性，使得PyRat客户端可以支持Windows/Linux/Macos等不同平台，目前只工作于Windows平台，其他平台未作测试。
+2. python的跨平台特性，使得PyRat客户端可以支持Windows/Linux/Macos等不同平台，目前支持Windows/Linux平台，其他平台未作测试。
 3. 服务端命令行控制和管理，逼格满满。
 4. 目前客户端支持基本信息、上传、下载、cmdshell、运行软件、结束进程、更新、卸载等功能
 
 # 依赖
 
-1. colorama
-2. pywin32
+1. colorama(服务端)
 
 # TODO
 
-1. 兼容测试Linux/Macos
+1. 兼容测试Macos等其他平台
 2. 增加更多功能，比如文件操作，批量断点文件传输，远程桌面，截屏，账户操作等等
 3. 服务端可视化
 4. 欢迎PR
